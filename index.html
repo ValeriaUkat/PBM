@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TaskMaster - Manajemen Tugas</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>📋 TaskMaster</h1>
+        <p>Manajemen Tugas yang Efektif & Produktif</p>
+      </div>
+
+      <div class="navigation">
+        <button class="nav-btn active" onclick="showPage('dashboard')">
+          📊 Dashboard
+        </button>
+        <button class="nav-btn" onclick="showPage('tasks')">📝 Tugas</button>
+        <button class="nav-btn" onclick="showPage('add-task')">
+          ➕ Tambah
+        </button>
+        <button class="nav-btn" onclick="showPage('analytics')">
+          📈 Analitik
+        </button>
+      </div>
+
+      <div class="content">
+        <!-- Dashboard Page -->
+        <div class="page active" id="dashboard">
+          <h2 style="margin-bottom: 25px; color: #1f2937">
+            📊 Dashboard Utama
+          </h2>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span class="stat-number" id="totalTasks">0</span>
+              <div class="stat-label">Total Tugas</div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number" id="completedTasks">0</span>
+              <div class="stat-label">Selesai</div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number" id="pendingTasks">0</span>
+              <div class="stat-label">Belum Selesai</div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number" id="highPriorityTasks">0</span>
+              <div class="stat-label">Prioritas Tinggi</div>
+            </div>
+          </div>
+
+          <h3 style="margin-bottom: 20px; color: #374151">
+            🔥 Tugas Prioritas Tinggi
+          </h3>
+          <div id="highPriorityList"></div>
+          <!-- Install Banner at the Bottom -->
+          <div class="install-banner" id="installBanner">
+            <span
+              >📱 Install TaskMaster sebagai aplikasi untuk pengalaman yang
+              lebih baik!</span
+            >
+            <button class="install-btn" id="installBtn">
+              Install Sekarang
+            </button>
+          </div>
+          <!-- Custom Install Dialog -->
+          <div
+            id="customInstallDialog"
+            class="custom-dialog"
+            style="display: none"
+          >
+            <div class="dialog-content">
+              <h3>Install app</h3>
+              <p>TaskMaster - Aplikasi Manajemen Tugas</p>
+              <div class="dialog-buttons">
+                <button id="installConfirmBtn">Install</button>
+                <button id="installCancelBtn">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tasks Page -->
+        <div class="page" id="tasks">
+          <h2 style="margin-bottom: 25px; color: #1f2937">📝 Semua Tugas</h2>
+          <div style="margin-bottom: 20px">
+            <select id="filterPriority" onchange="filterTasks()">
+              <option value="">Semua Prioritas</option>
+              <option value="high">Prioritas Tinggi</option>
+              <option value="medium">Prioritas Sedang</option>
+              <option value="low">Prioritas Rendah</option>
+            </select>
+            <select id="filterStatus" onchange="filterTasks()">
+              <option value="">Semua Status</option>
+              <option value="pending">Belum Selesai</option>
+              <option value="completed">Selesai</option>
+            </select>
+          </div>
+          <div class="task-list" id="taskList"></div>
+        </div>
+
+        <!-- Add Task Page -->
+        <div class="page" id="add-task">
+          <h2 style="margin-bottom: 25px; color: #1f2937">
+            ➕ Tambah Tugas Baru
+          </h2>
+          <form class="task-form" onsubmit="addTask(event)">
+            <div class="form-group">
+              <label for="taskTitle">📝 Judul Tugas</label>
+              <input
+                type="text"
+                id="taskTitle"
+                required
+                placeholder="Masukkan judul tugas..."
+              />
+            </div>
+            <div class="form-group">
+              <label for="taskDescription">📄 Deskripsi</label>
+              <textarea
+                id="taskDescription"
+                rows="3"
+                placeholder="Deskripsi detail tugas..."
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label for="taskDeadline">📅 Tenggat Waktu</label>
+              <input type="datetime-local" id="taskDeadline" required />
+            </div>
+            <div class="form-group">
+              <label for="taskPriority">⚡ Prioritas</label>
+              <select id="taskPriority" required>
+                <option value="">Pilih Prioritas</option>
+                <option value="high">🔴 Tinggi</option>
+                <option value="medium">🟡 Sedang</option>
+                <option value="low">🟢 Rendah</option>
+              </select>
+            </div>
+            <button type="submit" class="btn">✅ Tambah Tugas</button>
+          </form>
+        </div>
+
+        <!-- Analytics Page -->
+        <div class="page" id="analytics">
+          <h2 style="margin-bottom: 25px; color: #1f2937">
+            📈 Analitik & Laporan
+          </h2>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <span class="stat-number" id="completionRate">0%</span>
+              <div class="stat-label">Tingkat Penyelesaian</div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number" id="overdueCount">0</span>
+              <div class="stat-label">Tugas Terlambat</div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number" id="avgCompletionTime">0</span>
+              <div class="stat-label">Rata-rata Hari Selesai</div>
+            </div>
+            <div class="stat-card">
+              <span class="stat-number" id="todayTasks">0</span>
+              <div class="stat-label">Tugas Hari Ini</div>
+            </div>
+          </div>
+          <div style="background: white; padding: 25px; border-radius: 15px">
+            <h3 style="margin-bottom: 20px; color: #374151">
+              📊 Distribusi Prioritas
+            </h3>
+            <div
+              style="
+                display: flex;
+                gap: 20px;
+                align-items: center;
+                flex-wrap: wrap;
+              "
+            >
+              <div style="display: flex; align-items: center; gap: 10px">
+                <div
+                  style="
+                    width: 20px;
+                    height: 20px;
+                    background: #ef4444;
+                    border-radius: 50%;
+                  "
+                ></div>
+                <span
+                  >Tinggi: <strong id="highPriorityAnalytics">0</strong></span
+                >
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px">
+                <div
+                  style="
+                    width: 20px;
+                    height: 20px;
+                    background: #f59e0b;
+                    border-radius: 50%;
+                  "
+                ></div>
+                <span
+                  >Sedang: <strong id="mediumPriorityAnalytics">0</strong></span
+                >
+              </div>
+              <div style="display: flex; align-items: center; gap: 10px">
+                <div
+                  style="
+                    width: 20px;
+                    height: 20px;
+                    background: #22c55e;
+                    border-radius: 50%;
+                  "
+                ></div>
+                <span
+                  >Rendah: <strong id="lowPriorityAnalytics">0</strong></span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+    <div class="offline-indicator" id="offlineIndicator">
+      🔴 Offline - Data tersimpan lokal
+    </div>
+  </body>
+</html>
