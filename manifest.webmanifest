@@ -1,0 +1,22 @@
+{
+  "name": "TaskMaster",
+  "short_name": "TaskMaster",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "icons": [
+    {
+      "src": "https://cdn.glitch.me/248b0d2d-8ab9-4407-a073-136440ab3556/icon.png?v=1640879741758",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://cdn.glitch.me/248b0d2d-8ab9-4407-a073-136440ab3556/icon.png?v=1640879741758",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "description": "Aplikasi manajemen tugas pribadi berbasis web.",
+  "scope": "./"
+}
