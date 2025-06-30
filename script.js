@@ -1,41 +1,32 @@
 const tasks = [];
-let deferredPrompt; // Variabel untuk menyimpan event prompt
+let deferredPrompt;
+
 navigator.serviceWorker.register("dummy-sw.js");
 
-// Menampilkan halaman yang sesuai berdasarkan pageId
 function showPage(pageId) {
-  const pages = document.querySelectorAll(".page");
-  pages.forEach((page) => {
-    page.style.display = "none"; // Sembunyikan semua halaman
+  document.querySelectorAll(".page").forEach((page) => {
+    page.style.display = "none";
   });
+  document.getElementById(pageId).style.display = "block";
 
-  const activePage = document.getElementById(pageId);
-  activePage.style.display = "block"; // Tampilkan halaman aktif
-
-  if (pageId === "tasks") {
-    displayTasks();
-  }
-  if (pageId === "dashboard") {
-    updateDashboard();
-  }
+  if (pageId === "tasks") displayTasks();
+  if (pageId === "dashboard") updateDashboard();
 }
-// Add a new task to the tasks array
+
 function addTask(event) {
   event.preventDefault();
-
   const title = document.getElementById("taskTitle").value;
   const description = document.getElementById("taskDescription").value;
   const priority = document.getElementById("taskPriority").value;
 
   const newTask = {
-    title: title,
-    description: description,
-    priority: priority,
+    title,
+    description,
+    priority,
     completed: false,
   };
 
   tasks.push(newTask);
-
   document.getElementById("taskTitle").value = "";
   document.getElementById("taskDescription").value = "";
   document.getElementById("taskPriority").value = "";
@@ -44,11 +35,9 @@ function addTask(event) {
   updateDashboard();
 }
 
-// Display all tasks in the task list
 function displayTasks() {
   const taskList = document.getElementById("taskList");
   taskList.innerHTML = "";
-
   tasks.forEach((task, index) => {
     const taskItem = document.createElement("div");
     taskItem.className = "task-item";
@@ -60,7 +49,7 @@ function displayTasks() {
         <div class="task-title">${task.title}</div>
         <div class="task-meta">
           <span class="priority-badge priority-${task.priority}">${
-      task.priority.charAt(0).toUpperCase() + task.priority.slice(1)
+      task.priority
     }</span>
         </div>
       </div>
@@ -70,14 +59,12 @@ function displayTasks() {
   });
 }
 
-// Toggle task completion status
 function toggleCompletion(index) {
   tasks[index].completed = !tasks[index].completed;
   updateDashboard();
   displayTasks();
 }
 
-// Update the dashboard with task statistics
 function updateDashboard() {
   const totalTasks = tasks.length;
   const completedTasks = tasks.filter((task) => task.completed).length;
@@ -93,7 +80,6 @@ function updateDashboard() {
 
   const highPriorityList = document.getElementById("highPriorityList");
   highPriorityList.innerHTML = "";
-
   tasks
     .filter((task) => task.priority === "high")
     .forEach((task) => {
@@ -102,42 +88,40 @@ function updateDashboard() {
       taskItem.innerHTML = `
       <div class="task-header">
         <div class="task-title">${task.title}</div>
-        <div class="task-meta">
-          <span class="priority-badge priority-high">Tinggi</span>
-        </div>
+        <div class="task-meta"><span class="priority-badge priority-high">Tinggi</span></div>
       </div>
       <div class="task-description">${task.description}</div>
     `;
       highPriorityList.appendChild(taskItem);
     });
 }
+
 window.addEventListener("beforeinstallprompt", (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  document.getElementById("installBanner").style.display = "block"; // Tampilkan banner
+  document.getElementById("installBanner").style.display = "flex";
 });
 
 document.getElementById("installBtn").addEventListener("click", () => {
   if (deferredPrompt) {
     const customDialog = document.getElementById("customInstallDialog");
-    customDialog.style.display = "block"; // Tampilkan dialog konfirmasi
+    customDialog.style.display = "flex";
 
     document.getElementById("installConfirmBtn").onclick = function () {
-      customDialog.style.display = "none"; // Sembunyikan dialog
-      deferredPrompt.prompt(); // Tampilkan prompt instal
+      customDialog.style.display = "none";
+      deferredPrompt.prompt();
       deferredPrompt.userChoice.then((choiceResult) => {
         if (choiceResult.outcome === "accepted") {
-          console.log("Pengguna menerima prompt instal");
+          console.log("Aplikasi diinstal.");
         } else {
-          console.log("Pengguna menolak prompt instal");
+          console.log("Instalasi dibatalkan.");
         }
-        deferredPrompt = null; // Kosongkan deferredPrompt
+        deferredPrompt = null;
       });
     };
 
     document.getElementById("installCancelBtn").onclick = function () {
-      customDialog.style.display = "none"; // Sembunyikan dialog
-      console.log("Pengguna menolak untuk menginstal aplikasi.");
+      customDialog.style.display = "none";
     };
   }
 });
