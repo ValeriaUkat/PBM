@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TaskMaster - Manajemen Tugas</title>
+    <link rel="manifest" href="manifest.webmanifest" />
     <link rel="stylesheet" href="styles.css" />
     <script src="script.js" defer></script>
   </head>
@@ -58,10 +59,10 @@
           <div id="highPriorityList"></div>
           <!-- Install Banner at the Bottom -->
           <div class="install-banner" id="installBanner">
-            <span
-              >📱 Install TaskMaster sebagai aplikasi untuk pengalaman yang
-              lebih baik!</span
-            >
+            <span>
+              📱 Install TaskMaster sebagai aplikasi untuk pengalaman yang lebih
+              baik!
+            </span>
             <button class="install-btn" id="installBtn">
               Install Sekarang
             </button>
@@ -78,6 +79,20 @@
               <div class="dialog-buttons">
                 <button id="installConfirmBtn">Install</button>
                 <button id="installCancelBtn">Cancel</button>
+              </div>
+              <div style="margin-top: 20px">
+                <a
+                  href="taskmaster.apk"
+                  download
+                  class="btn"
+                  style="
+                    display: inline-block;
+                    margin-top: 10px;
+                    background-color: #10b981;
+                  "
+                >
+                  📥 Download APK
+                </a>
               </div>
             </div>
           </div>
@@ -165,63 +180,9 @@
               <div class="stat-label">Tugas Hari Ini</div>
             </div>
           </div>
-          <div style="background: white; padding: 25px; border-radius: 15px">
-            <h3 style="margin-bottom: 20px; color: #374151">
-              📊 Distribusi Prioritas
-            </h3>
-            <div
-              style="
-                display: flex;
-                gap: 20px;
-                align-items: center;
-                flex-wrap: wrap;
-              "
-            >
-              <div style="display: flex; align-items: center; gap: 10px">
-                <div
-                  style="
-                    width: 20px;
-                    height: 20px;
-                    background: #ef4444;
-                    border-radius: 50%;
-                  "
-                ></div>
-                <span
-                  >Tinggi: <strong id="highPriorityAnalytics">0</strong></span
-                >
-              </div>
-              <div style="display: flex; align-items: center; gap: 10px">
-                <div
-                  style="
-                    width: 20px;
-                    height: 20px;
-                    background: #f59e0b;
-                    border-radius: 50%;
-                  "
-                ></div>
-                <span
-                  >Sedang: <strong id="mediumPriorityAnalytics">0</strong></span
-                >
-              </div>
-              <div style="display: flex; align-items: center; gap: 10px">
-                <div
-                  style="
-                    width: 20px;
-                    height: 20px;
-                    background: #22c55e;
-                    border-radius: 50%;
-                  "
-                ></div>
-                <span
-                  >Rendah: <strong id="lowPriorityAnalytics">0</strong></span
-                >
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
-
     <div class="notification" id="notification"></div>
     <div class="offline-indicator" id="offlineIndicator">
       🔴 Offline - Data tersimpan lokal
